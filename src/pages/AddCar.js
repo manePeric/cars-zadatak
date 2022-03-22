@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useHistory, useParams} from "react-router-dom";
 import carService from "../services/CarService";
 const years = () => {
@@ -66,6 +66,16 @@ function AddCar() {
     `);
   };
 
+  useEffect(() => {
+    const getCar = async () => {
+      const {data} = await this.cars.get(`cars/${id}`);
+      return data
+    };
+    if(id){
+    getCar();
+  }
+  }, [id]);
+
   return (
     <div>
       <h1>Add Car</h1>
@@ -121,7 +131,7 @@ function AddCar() {
           <input
             type="checkbox"
             checked={newCar.isAutomatic}
-            required
+
             onChange={({ target }) => {
               setNewCar({ ...newCar, isAutomatic: target.checked });
             }}

@@ -1,13 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import SingleCar from "../components/SingleCar";
 import carService from "../services/CarService";
 function AppCars() {
   const [cars, setCars] = useState([]);
+  const history = useHistory()
+  
+  const handleEdit = (id) => {
+    history.push(`edit/${id}`);
+  };
+
 
   useEffect(() => {
     const getCars = async () => {
       const data = await carService.getAll();
-
       setCars(data);
     };
     getCars();
@@ -27,6 +33,7 @@ function AppCars() {
             isAutomatic={car.isAutomatic}
             engine={car.engine}
             numberOfDoors={car.numberOfDoors}
+            edit={handleEdit}
           />
         ))}
       </ul>

@@ -27,6 +27,16 @@ class CarService {
 
     return null;
   }
+
+  async get(id){
+    try {
+    const {data} = await this.cars.get(`cars/${id}`);
+    return data
+    } catch (error) {
+      console.log(error)
+    }
+    return {};
+  }
 }
 
 export default new CarService();

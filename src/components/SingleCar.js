@@ -9,6 +9,7 @@ function SingleCar({
   isAutomatic,
   engine,
   numberOfDoors,
+  edit 
 }) {
   return (
     <div
@@ -27,6 +28,7 @@ function SingleCar({
       <span>This Car {isAutomatic ? "is" : "is not"} Automatic </span>
       <span>Engine: {engine}</span>
       <span>Number Of Doors {numberOfDoors}</span>
+      <button onClick={() => edit(id)}>Edit</button>
     </div>
   );
 }
