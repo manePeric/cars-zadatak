@@ -38,7 +38,7 @@ function AddCar() {
     } else {
       console.log('ovo je id');
     }
-    
+
     history.push('/cars');
   };
 
@@ -54,6 +54,18 @@ function AddCar() {
     });
   };
 
+  const previewForm = () => {
+    alert(`
+      Brand: ${newCar.brand} 
+      Model: ${newCar.model} 
+      Year: ${newCar.year} 
+      Max speed: ${newCar.maxSpeed} 
+      Number of doors: ${newCar.numberOfDoors} 
+      Is Automatic: ${newCar.isAutomatic ? 'Yes' : 'No'}
+      Engine: ${newCar.engine} 
+    `);
+  };
+
   return (
     <div>
       <h1>Add Car</h1>
@@ -61,6 +73,8 @@ function AddCar() {
         <input
           value={newCar.brand}
           placeholder="Brand"
+          required
+          minLength = {2}
           onChange={({ target }) =>
             setNewCar({ ...newCar, brand: target.value })
           }
@@ -68,6 +82,8 @@ function AddCar() {
         <input
           value={newCar.model}
           placeholder="Model"
+          required
+          minLength={2}
           onChange={({ target }) =>
             setNewCar({ ...newCar, model: target.value })
           }
@@ -76,6 +92,7 @@ function AddCar() {
         <select
           style={{ width: 206 }}
           value={newCar.year}
+          required
           onChange={({ target }) =>
             setNewCar({ ...newCar, year: Number(target.value) })
           }
@@ -93,6 +110,7 @@ function AddCar() {
         <input
           value={newCar.numberOfDoors}
           placeholder="Number of door"
+          required
           onChange={({ target }) =>
             setNewCar({ ...newCar, numberOfDoors: target.value })
           }
@@ -103,6 +121,7 @@ function AddCar() {
           <input
             type="checkbox"
             checked={newCar.isAutomatic}
+            required
             onChange={({ target }) => {
               setNewCar({ ...newCar, isAutomatic: target.checked });
             }}
@@ -125,8 +144,13 @@ function AddCar() {
           ))}
         </div>
         <button>Add Car</button>
+        <br></br>
         <button type='button' onClick={resetForm}>
             Reset Form
+        </button>
+        <br></br>
+        <button type='button' onClick={previewForm}>
+            Preview Form
         </button>
       </form>
     </div>
