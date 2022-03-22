@@ -1,33 +1,63 @@
 import React, { useState } from "react";
-
+import { useHistory, useParams} from "react-router-dom";
+import carService from "../services/CarService";
 const years = () => {
   const array = [];
   const startYear = 1990;
   const endYear = 2018;
 
   for (let i = endYear; i >= startYear; i--) {
-    array.push(<option value={i}>{i}</option>);
+    array.push(i);
   }
   return array;
 };
 
 const engines = ["diesel", "petrol", "electric", "hybrid"];
 
+
+
 function AddCar() {
+
+  const {id}  = useParams();  
+  const history = useHistory();
+
   const [newCar, setNewCar] = useState({
     brand: "",
     model: "",
-    year: years,
+    year: years()[0] ,
     maxSpeed: "",
     numberOfDoors: "",
     isAutomatic: false,
     engine: "",
   });
 
+  const handleNewCarSubmit = async (event) => {
+    event.preventDefault();
+    if (!id) {
+      await carService.add(newCar);
+    } else {
+      console.log('ovo je id');
+    }
+    
+    history.push('/cars');
+  };
+
+  const resetForm = () => {
+    setNewCar({
+      brand: '',
+      model: '',
+      year: years()[0],
+      maxSpeed: '',
+      numberOfDoors: '',
+      isAutomatic: false,
+      engine: '',
+    });
+  };
+
   return (
     <div>
       <h1>Add Car</h1>
-      <form>
+      <form onSubmit={handleNewCarSubmit}>
         <input
           value={newCar.brand}
           placeholder="Brand"
@@ -45,13 +75,13 @@ function AddCar() {
         <br></br>
         <select
           style={{ width: 206 }}
+          value={newCar.year}
           onChange={({ target }) =>
             setNewCar({ ...newCar, year: Number(target.value) })
           }
-          value={newCar.year}
         >
-          <option value="0">Year</option>
-          {years()}
+
+          {years().map((item) => <option key={item} value={item}>{item}</option>)}
         </select>
         <input
           value={newCar.maxSpeed}
@@ -78,8 +108,8 @@ function AddCar() {
             }}
           />
         </span>
-        <div style={{ flexDirection: "column" }}>
-          <h4>Pick engine:</h4>
+        <div style={{ flexDirection: "column" , display: "flex"}}>
+          <h5>Pick engine:</h5>
           {engines.map((engine, index) => (
             <span key={index}>
               <input
@@ -90,11 +120,14 @@ function AddCar() {
                 value={engine}
                 onChange={() => setNewCar({ ...newCar, engine })}
               />
-              {engine.toUpperCase()}
+              {engine.toLowerCase()}
             </span>
           ))}
         </div>
         <button>Add Car</button>
+        <button type='button' onClick={resetForm}>
+            Reset Form
+        </button>
       </form>
     </div>
   );

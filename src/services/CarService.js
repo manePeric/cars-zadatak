@@ -3,7 +3,7 @@ import axios from "axios";
 class CarService {
   constructor() {
     this.cars = axios.create({
-      dbURL: "http://localhost:3000",
+      baseURL: "http://localhost:3000/api",
     });
   }
 
