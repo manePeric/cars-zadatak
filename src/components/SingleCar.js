@@ -24,7 +24,7 @@ function SingleCar({
       <span>Model: {model}</span>
       <span>Year: {year}</span>
       <span>Max Speed: {maxSpeed}</span>
-      <span>Automatic: {isAutomatic}</span>
+      <span>This Car {isAutomatic ? "is" : "is not"} Automatic </span>
       <span>Engine: {engine}</span>
       <span>Number Of Doors {numberOfDoors}</span>
     </div>

@@ -14,6 +14,18 @@ class CarService {
     } catch (error) {
       console.log(error);
     }
+    return [];
+  }
+
+  async add(newCar) {
+    try {
+      const { data } = await this.cars.post("cars", newCar);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return null;
   }
 }
 
