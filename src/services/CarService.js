@@ -28,12 +28,34 @@ class CarService {
     return null;
   }
 
-  async get(id){
+  async get(id) {
     try {
-    const {data} = await this.cars.get(`cars/${id}`);
-    return data
+      const { data } = await this.cars.get(`cars/${id}`);
+      return data;
     } catch (error) {
-      console.log(error)
+      console.log(error);
+    }
+    return {};
+  }
+
+  async edit(id, newCar) {
+    try {
+      const { data } = await this.cars.put(`cars/${id}`, newCar);
+
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+
+    return null;
+  }
+
+  async delete(carId) {
+    try {
+      const { data } = await this.cars.delete(`cars/${carId}`);
+      return data;
+    } catch (error) {
+      console.log(error);
     }
     return {};
   }

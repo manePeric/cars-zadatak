@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { useHistory, useParams} from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import carService from "../services/CarService";
 const years = () => {
   const array = [];
@@ -14,17 +14,14 @@ const years = () => {
 
 const engines = ["diesel", "petrol", "electric", "hybrid"];
 
-
-
 function AddCar() {
-
-  const {id}  = useParams();  
+  const { id } = useParams();
   const history = useHistory();
 
   const [newCar, setNewCar] = useState({
     brand: "",
     model: "",
-    year: years()[0] ,
+    year: years()[0],
     maxSpeed: "",
     numberOfDoors: "",
     isAutomatic: false,
@@ -36,21 +33,21 @@ function AddCar() {
     if (!id) {
       await carService.add(newCar);
     } else {
-      console.log('ovo je id');
+      await carService.edit(id, newCar);
     }
 
-    history.push('/cars');
+    history.push("/cars");
   };
 
   const resetForm = () => {
     setNewCar({
-      brand: '',
-      model: '',
+      brand: "",
+      model: "",
       year: years()[0],
-      maxSpeed: '',
-      numberOfDoors: '',
+      maxSpeed: "",
+      numberOfDoors: "",
       isAutomatic: false,
-      engine: '',
+      engine: "",
     });
   };
 
@@ -61,30 +58,31 @@ function AddCar() {
       Year: ${newCar.year} 
       Max speed: ${newCar.maxSpeed} 
       Number of doors: ${newCar.numberOfDoors} 
-      Is Automatic: ${newCar.isAutomatic ? 'Yes' : 'No'}
+      Is Automatic: ${newCar.isAutomatic ? "Yes" : "No"}
       Engine: ${newCar.engine} 
     `);
   };
 
   useEffect(() => {
     const getCar = async () => {
-      const {data} = await this.cars.get(`cars/${id}`);
-      return data
+      const { id: _, ...restData } = await carService.get(id);
+
+      setNewCar({ ...restData });
     };
-    if(id){
-    getCar();
-  }
+    if (id) {
+      getCar();
+    }
   }, [id]);
 
   return (
     <div>
-      <h1>Add Car</h1>
+      <h1>{id ? "Edit Car" : "Add Car"}</h1>
       <form onSubmit={handleNewCarSubmit}>
         <input
           value={newCar.brand}
           placeholder="Brand"
           required
-          minLength = {2}
+          minLength={2}
           onChange={({ target }) =>
             setNewCar({ ...newCar, brand: target.value })
           }
@@ -107,8 +105,11 @@ function AddCar() {
             setNewCar({ ...newCar, year: Number(target.value) })
           }
         >
-
-          {years().map((item) => <option key={item} value={item}>{item}</option>)}
+          {years().map((item) => (
+            <option key={item} value={item}>
+              {item}
+            </option>
+          ))}
         </select>
         <input
           value={newCar.maxSpeed}
@@ -131,13 +132,12 @@ function AddCar() {
           <input
             type="checkbox"
             checked={newCar.isAutomatic}
-
             onChange={({ target }) => {
               setNewCar({ ...newCar, isAutomatic: target.checked });
             }}
           />
         </span>
-        <div style={{ flexDirection: "column" , display: "flex"}}>
+        <div style={{ flexDirection: "column", display: "flex" }}>
           <h5>Pick engine:</h5>
           {engines.map((engine, index) => (
             <span key={index}>
@@ -153,14 +153,14 @@ function AddCar() {
             </span>
           ))}
         </div>
-        <button>Add Car</button>
+        <button>{id ? "Edit" : "Add new"}</button>
         <br></br>
-        <button type='button' onClick={resetForm}>
-            Reset Form
+        <button type="button" onClick={resetForm}>
+          Reset Form
         </button>
         <br></br>
-        <button type='button' onClick={previewForm}>
-            Preview Form
+        <button type="button" onClick={previewForm}>
+          Preview Form
         </button>
       </form>
     </div>
